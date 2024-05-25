@@ -16,11 +16,13 @@ def valid_for_len(value):
 class TopicForm(forms.Form):
     topic_name=forms.CharField(max_length=20,validators=[valid_for_a,valid_for_len])
   
-
+def valid_for_url(value):
+    if value.endswith('.in'):
+        raise forms.ValidationError('please check the given urls')
 class WebpageForm(forms.Form):
     topic_name=forms.ModelChoiceField(queryset=Topic.objects.all())
     name=forms.CharField()
-    url=forms.URLField()
+    url=forms.URLField(validators=[valid_for_url])
     email=forms.EmailField()
 
 
