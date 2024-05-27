@@ -19,11 +19,29 @@ class TopicForm(forms.Form):
 def valid_for_url(value):
     if value.endswith('.in'):
         raise forms.ValidationError('please check the given urls')
+    
+
+def valid_for_len(value):
+    if len(value)<6:
+        raise forms.ValidationError('please give the length of the value')
 class WebpageForm(forms.Form):
     topic_name=forms.ModelChoiceField(queryset=Topic.objects.all())
-    name=forms.CharField()
+    name=forms.CharField(validators=[valid_for_len])
     url=forms.URLField(validators=[valid_for_url])
     email=forms.EmailField()
+    reemail=forms.EmailField()
+    botcatcher=forms.CharField(widget=forms.HiddenInput,required=False)
+    
+    def clean(self):
+        email=self.cleaned_data['email']
+        reemail=self.cleaned_data['reemail']
+        if email!=reemail:
+            raise forms.ValidationError('please check the emails')
+        
+    def clean_botcatcher(self):
+        cu=self.cleaned_data['botcatcher']
+        if len(cu)>0:
+            raise forms.ValidationError('bot cs is catched ')
 
 
 class AccessForm(forms.Form):

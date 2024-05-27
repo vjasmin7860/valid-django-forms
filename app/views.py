@@ -33,9 +33,9 @@ def insert_webpage(request):
             email=EFWO.cleaned_data['email']
 
             
-            WO=Webpage.objects.get_or_create(topic_name=topic_name,name=name,url=url,email=email)[0]
-            WO.save()
-            return HttpResponse('webpageform data is submitted')
+            #WO=Webpage.objects.get_or_create(topic_name=topic_name,name=name,url=url,email=email)[0]
+            #WO.save()
+            return HttpResponse(str(EFWO.cleaned_data))
         else:
             return HttpResponse('data is invalid')
     return render(request,'insert_webpage.html',d)
